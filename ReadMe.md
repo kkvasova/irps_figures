@@ -18,6 +18,6 @@ Create figure on how Inflow with Ram Pressure Stripping galactic chemical evolut
 
 Create plots of spatial dwarf galaxies position: tests.
 
-### spatial_dwarfs.ipnb 
+### simplest_plot.ipnb 
 
 Final plots of spatial positions of galaxies.

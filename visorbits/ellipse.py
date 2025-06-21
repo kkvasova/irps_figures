@@ -15,12 +15,12 @@
 '''
 
 from astropy import units as u
-import astropy as a0
+import astropy as astra
 import numpy as np
 
 # Orbit in its own plane
 M = 1.5*10**12*u.kg*2*10**30 # MW halo
-G = a0.constants.G
+G = astra.constants.G
 
 def ecc(r0, v0, vtau0):
     '''
@@ -57,7 +57,7 @@ def a_ax(r0, v0):
     '''
     return (r0.to(u.m)/(1-(v0.to(u.m/u.s))**2*r0.to(u.m)/2./G/M)/2.).to(u.kpc).value
 
-def angl_ecc(rc, e0, a0):
+def angl_ecc(rc, e0, a0, sign):
     '''
     ---------------------------------------------------------------------
     Arguments:
@@ -65,6 +65,7 @@ def angl_ecc(rc, e0, a0):
     rc       :   initial radius-vector
     e0       :   eccentricity
     a0       :   semi-major axis
+    sign     :   sign of scalar product r_dwarf*v_dwarf
     ---------------------------------------------------------------------
     Output:
     ---------------------------------------------------------------------
@@ -73,7 +74,7 @@ def angl_ecc(rc, e0, a0):
     NOTE     :
     ---------------------------------------------------------------------
     '''
-    psihalf = np.arctan(np.sqrt(2/(1./e0*(1-rc/a0)+1)-1.))
+    psihalf = np.arctan(np.sqrt(2/(1./e0*(1-rc/a0)+1)-1.)*sign)
     if rc>a0:
         psihalf += np.pi
     return (psihalf*2)
@@ -93,8 +94,13 @@ def angl_c(psic, e0):
     NOTE     :    psic/2 is between 0, pi
     ---------------------------------------------------------------------
     '''
+    while abs(psic) > 2*np.pi or psic<0:
+        psic+=2*np.pi*(-1*psic)/(abs(psic))
+    
     theta_signed = np.arctan(np.sqrt((1+e0)/(1-e0))*np.tan(psic/2))
-    if psic-np.pi > np.pi/2.:
+    
+    # a_semimajor = 1:
+    if rc(psic, e0, 1.)>1.*(1-e0**2): 
         theta_signed +=np.pi
     theta = 2.*theta_signed
     return theta
