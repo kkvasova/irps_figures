@@ -1,4 +1,4 @@
-# Figures for IRPS 
+# Figures for Inflow with Ram Pressure Stripping galactic chemical evolution model (IRPS)
 
 The plots which I've used behind the main paper (https://iopscience.iop.org/article/10.3847/1538-4357/adb729)
 
